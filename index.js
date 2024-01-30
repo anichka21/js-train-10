@@ -32,6 +32,12 @@ function customEntries(obj) {
   // Перевірка, чи переданий аргумент є об'єктом, якщо ні повертаємо "Помилка: Аргумент не є об'єктом."
   // Використання методу `entries` для отримання масиву з усіма властивостями та значеннями
   // Повернення масиву властивостей та значень
+  if (!obj === typeof(obj)) {
+    return "Помилка: Аргумент не є об'єктом.";
+  };
+  for (const [key, value] of obj) {
+    return `${key}: ${value}`;
+  }
 }
 
 // Приклад використання функції customEntries
@@ -61,6 +67,17 @@ function customObjectFromEntries(entries) {
   // Повернення обробленого запису [key, value]
   // Використання методу `fromEntries` для створення об'єкта з масиву записів
   // Повернення створеного об'єкта
+  if (!Array.isArray(entries)) {
+    return "Помилка: Вхідний аргумент має бути масивом.";
+  }
+  return Object.fromEntries(
+    arr.map((item, index) => {
+      if (typeof index === 'number') {
+        return [index.toString(), item];
+      }
+    }
+    )
+  );
 }
 
 console.log("Завдання: 3 ==============================");
@@ -90,6 +107,14 @@ function checkProperty(obj, prop) {
   // Перевіряємо, чи вхідний параметр prop є рядком, якщо ні, повертаємо false
   // Використовуємо метод hasOwnProperty() для перевірки наявності властивості в об'єкті
   // Повертаємо результат перевірки
+  if (typeof obj !== "object" || Array.isArray(obj)) {
+    return false;
+  }
+  if (typeof prop !== "string") {
+    return false;
+  }
+  return obj.hasOwnProperty(prop);
+
 }
 console.log("Завдання: 4 ==============================");
 console.log(checkProperty({ a: 1, b: 2, c: 3 }, "b")); // Виведе true
@@ -167,6 +192,7 @@ function checkAndPreventExtensions(obj) {
   // Перевіряємо, чи можна додати нові властивості до об'єкта
   // Якщо можна, запобігаємо подальшому додаванню властивостей
   // Повторно перевіряємо, чи можна додати нові властивості до об'єкта, та повертаємо результат
+
 }
 console.log("Завдання: 8 ==============================");
 console.log(checkAndPreventExtensions({ a: 1, b: 2 })); // Виведе false
@@ -184,6 +210,11 @@ function sealAndCheck(obj) {
   // Перевіряємо, чи вхідний параметр є об'єктом, якщо ні, повертаємо false
   // Запечатовуємо об'єкт
   // Перевіряємо, чи запечатаний об'єкт, та повертаємо результат
+  if (!Array.isArray(obj)) {
+    return false;
+  }
+  Object.seal(obj);
+  console.log(Object.isSealed(obj));
 }
 console.log("Завдання: 9 ==============================");
 console.log(sealAndCheck({ a: 1, b: 2 })); // Виведе true
@@ -209,6 +240,10 @@ function checkOwnership(obj1, obj2, key) {
   // Якщо значення однакові, повернемо true.
   // Якщо відрізняються, повернемо false.
   // Якщо хоч один з об'єктів не має вказаного ключа, повернемо false.
+  if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
+    return obj1[key] === obj2[key];
+  }
+  return false;
 }
 
 // Приклад використання функції:
@@ -230,6 +265,16 @@ function getObjectValuesSum(obj) {
   // Отримуємо всі значення об'єкта
   // Обчислюємо суму значень
   // Повертаємо суму
+  if (!Array.isArray(obj)) {
+    return 0;
+  }
+  let sum = 0;
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      sum += obj[key];
+    }
+  }
+  return sum;
 }
 
 console.log("Завдання: 11 ==============================");
